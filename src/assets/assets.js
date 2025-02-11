@@ -72,6 +72,7 @@ import razorpay_logo from './razorpay_logo.png';
 import stripe_logo from './stripe_logo.png';
 import cross_icon from './cross_icon.png';
 
+
 export const assets = {
   logo,
   hero_img,
@@ -99,7 +100,7 @@ export const products1 = [
     name: 'Aluminum Cans (6)',
     description:
       'A lightweight, often dented or crumpled, aluminum container typically used for beverages. It has a cylindrical shape with a pull-tab opening, commonly found as a disposable item, now repurposed for recycling or reuse.'
-    ,price: 30,
+    ,price: 10,
     image: [p_img1],
     category: 'Scrap Metal',
     subCategory: 'Reuseable',
