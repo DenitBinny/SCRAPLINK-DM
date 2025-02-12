@@ -14,7 +14,7 @@ const Navbar = () => {
       </Link>
 
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
-        {['HOME', 'COLLECTION', 'ABOUT', 'CONTACT'].map((item) => (
+        {['HOME', 'COLLECTION', 'ABOUT', 'CONTACT','CHAT'].map((item) => (
           <NavLink
             key={item}
             to={`/${item.toLowerCase()}`}

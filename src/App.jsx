@@ -3,6 +3,7 @@ import './App.css';
 import Home from './pages/Home';
 import Dashboard from "./pages/Dashboard";
 import Collection from './pages/Collection';
+import Chat from './pages/Chat';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Product from './pages/Product';
@@ -38,6 +39,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/llogin" element={<Llogin />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/Chat" element={<Chat />} />
         <Route path="/placeorder" element={<PlaceOrder />} />
         <Route path="/orders" element={<Orders />} />
       </Routes>
