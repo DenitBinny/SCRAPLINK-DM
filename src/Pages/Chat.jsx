@@ -9,7 +9,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Hello! How can I assist you today?" }
+    { role: "model", text: "Hello! How can I assist you today?" }
   ]);
   const [input, setInput] = useState("");
 
@@ -20,16 +20,26 @@ const ChatApp = () => {
     setMessages(newMessages);
     setInput("");
     
-    const result = await model.generateContent({
-      contents: newMessages.map(msg => ({ role: msg.role, parts: [{ text: msg.text }] })),
-      generationConfig: {
-        maxOutputTokens: 1000,
-        temperature: 0.1,
-      }
-    });
-    
-    const botResponse = await result.response.text();
-    setMessages([...newMessages, { role: "bot", text: botResponse }]);
+    try {
+      const result = await model.generateContent({
+        contents: newMessages.map(msg => ({ role: msg.role, parts: [{ text: msg.text }] })),
+        generationConfig: {
+          maxOutputTokens: 1000,
+          temperature: 0.1,
+        }
+      });
+      
+      const botResponse = await result.response.text();
+      setMessages([...newMessages, { role: "model", text: botResponse }]);
+    } catch (error) {
+      console.error("Error generating response:", error);
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage();
+    }
   };
 
   return (
@@ -43,11 +53,14 @@ const ChatApp = () => {
         </div>
         <div className="p-4 flex-1 flex flex-col space-y-3 overflow-auto">
           {messages.map((msg, index) => (
-            <Card key={index} className={msg.role === "user" ? "bg-blue-500 text-white rounded-2xl p-3 self-end max-w-xs" : "bg-gray-200 rounded-2xl p-3 self-start max-w-xs"}>
-              <CardContent className="text-sm leading-relaxed">
-                {msg.text}
-              </CardContent>
-            </Card>
+            <div key={index} className={msg.role === "user" ? "self-end" : "self-start"}>
+              <div className="text-xs text-gray-500 mb-1">{msg.role === "user" ? "You" : "Bot"}</div>
+              <Card className={msg.role === "user" ? "bg-blue-500 text-white rounded-2xl p-3 max-w-xs" : "bg-gray-200 rounded-2xl p-3 max-w-xs"}>
+                <CardContent>
+                  <span className="text-sm leading-relaxed">{msg.text}</span>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
         <div className="p-4 border-t bg-white flex items-center space-x-2">
@@ -57,6 +70,7 @@ const ChatApp = () => {
             placeholder="Message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
           <Button variant="ghost" size="icon" onClick={handleSendMessage}>
             <Send size={20} className="text-blue-500" />
